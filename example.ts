@@ -1,10 +1,6 @@
-# ts-pressure-observer
-
-```typescript
-// make sure we have the types
-import "ts-pressure-observer"
-
 export async function example(): Promise<PressureObserver | undefined> {
+  const display = globalThis.document?.querySelector("#display")
+
   /**
    * the callback only gets invoked when the pressure changes from one value to the other
    */
@@ -18,7 +14,11 @@ export async function example(): Promise<PressureObserver | undefined> {
 
     const current = changes.at(-1)!;
     if (current.source === "cpu") {
-      console.log(`${Logs[current.state]} @ ${current.time.toFixed(0)}ms`)
+      const msg = `${Logs[current.state]} @ ${current.time.toFixed(0)}ms`
+      console.log(msg)
+      if (display) {
+        display.innerHTML = msg
+      }
     }
   }
 
@@ -41,7 +41,6 @@ export async function example(): Promise<PressureObserver | undefined> {
   return observe()
 }
 
-if (import.meta.main) {
+if (import.meta.main || globalThis.navigator?.onLine) {
   example()
 }
-```

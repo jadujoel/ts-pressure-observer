@@ -5,20 +5,20 @@
  * - 🟡 `"serious"`: Target device pressure, temperature and/or energy usage is consistently highly elevated. The system may be throttling as a countermeasure to reduce thermals.
  * - 🔴 `"critical"`: The temperature of the target device or system is significantly elevated and it requires cooling down to avoid any potential issues.
  * */
-export type PressureRecordState = "nominal" | "fair" | "serious" | "critical"
+declare type PressureRecordState = "nominal" | "fair" | "serious" | "critical"
 
 /**
  * - `"thermals"`: represents the global thermal state of the entire system.
  * - `"cpu"`: represents the average pressure of the central processing unit (CPU) across all its cores. This state can be affected by other apps and sites than the observing site.
  */
-export type PressureRecordSource = "thermals" | "cpu"
+declare type PressureRecordSource = "thermals" | "cpu"
 
 /**
  * - source: `PressureRecordSource`
  * - state: `PressureRecordState`
  * - time: A `DOMHighResTimeStamp` indicating the timestamp of the record.
  */
-export interface PressureRecord {
+declare interface PressureRecord {
   readonly source: PressureRecordSource
   readonly state: PressureRecordState
   readonly time: number
@@ -35,9 +35,9 @@ export interface PressureRecord {
  * - observer
  *  - The observer object that is receiving the above records.
  */
-export type PressureObserverCallback = (changes: readonly PressureRecord[], observer?: PressureObserver) => void
+declare type PressureObserverCallback = (changes: readonly PressureRecord[], observer?: PressureObserver) => void
 
-export interface PressureObserveOptions {
+declare interface PressureObserveOptions {
   /**
    * A number representing the requested sampling interval expressed in milliseconds.
    * Defaults to 0 meaning it will get updates as fast as the system can handle it.
@@ -48,11 +48,11 @@ export interface PressureObserveOptions {
 /**
  * Thrown if the Compute Pressure API is disallowed by a compute-pressure Permissions Policy.
  */
-export type NotAllowedError = DOMException
+declare type NotAllowedError = DOMException
 /**
  * Thrown if the source parameter is not one of the supported sources for this user agent.
  */
-export type NotSupportedError = DOMException
+declare type NotSupportedError = DOMException
 
 /**
  * This feature is not Baseline because it does not work in some of the most widely-used browsers.
@@ -60,7 +60,7 @@ export type NotSupportedError = DOMException
  * - Note This feature is available in Web Workers, except for Service Workers.
  * - Secure context: This feature is available only in secure contexts (HTTPS), in some or all supporting browsers.
  */
-export declare class PressureObserver {
+declare class PressureObserver {
   /**
    * Creates and returns a new PressureObserver object.
    */
@@ -98,41 +98,4 @@ export declare class PressureObserver {
    * It is useful when you want to a stop observing a source but would like to be sure to get any records that have not yet been passed into the observer callback.
    */
   takeRecords: () => PressureRecord[]
-}
-
-export async function example(): Promise<PressureObserver | undefined> {
-  /**
-   * the callback only gets invoked when the pressure changes from one value to the other
-   */
-  function callback(changes: readonly PressureRecord[]): void {
-    const Logs = {
-      nominal: "⚪ CPU Nominal",
-      fair: "🟢 CPU Fair",
-      serious: "🟡 CPU Serious",
-      critical: "🔴 CPU Critical",
-    } as const satisfies Record<PressureRecordState, string>
-
-    const current = changes.at(-1)!;
-    if (current.source === "cpu") {
-      console.log(`${Logs[current.state]} @ ${current.time.toFixed(0)}ms`)
-    }
-  }
-
-  function observe(options: PressureObserveOptions = { sampleInterval: 1000 }): PressureObserver | undefined {
-    if (typeof PressureObserver === "undefined" || !(globalThis as { isSecureContext?: boolean }).isSecureContext) {
-      return undefined
-    }
-    try {
-      const observer = new PressureObserver(callback)
-      observer.observe("cpu", options).catch(reason => {
-        console.trace("Failed To Set Up Pressure Observer", reason)
-      })
-      return observer
-    } catch (error) {
-      console.trace("Failed To Set Up Pressure Observer", error)
-    }
-    return undefined
-  }
-
-  return observe()
 }

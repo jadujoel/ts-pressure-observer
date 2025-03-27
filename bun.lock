@@ -3,6 +3,9 @@
   "workspaces": {
     "": {
       "name": "ts-pressure-observer",
+      "dependencies": {
+        "@types/web": "0.0.214",
+      },
       "devDependencies": {
         "@types/bun": "latest",
       },
@@ -15,6 +18,8 @@
     "@types/bun": ["@types/bun@1.2.8", "", { "dependencies": { "bun-types": "1.2.7" } }, "sha512-t8L1RvJVUghW5V+M/fL3Thbxcs0HwNsXsnTEBEfEVqGteiJToOlZ/fyOEaR1kZsNqnu+3XA4RI/qmnX4w6+S+w=="],
 
     "@types/node": ["@types/node@22.13.14", "", { "dependencies": { "undici-types": "~6.20.0" } }, "sha512-Zs/Ollc1SJ8nKUAgc7ivOEdIBM8JAKgrqqUYi2J997JuKO7/tpQC+WCetQ1sypiKCQWHdvdg9wBNpUPEWZae7w=="],
+
+    "@types/web": ["@types/web@0.0.214", "", {}, "sha512-yK3O1dFOhU1kvf2dAqd2MiAcEXJEoFscrkyUx0lEnIAzcZW1qBUey/H0ApH3UCicoIqtFDZMCDC9lqGaXw6gYg=="],
 
     "@types/ws": ["@types/ws@8.18.0", "", { "dependencies": { "@types/node": "*" } }, "sha512-8svvI3hMyvN0kKCJMvTJP/x6Y/EoQbepff882wL+Sn5QsXb3etnamgrJq4isrBxSJj5L2AuXcI0+bgkoAXGUJw=="],
 
